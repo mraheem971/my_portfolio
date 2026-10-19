@@ -84,6 +84,8 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `email` VARCHAR(100) NOT NULL,
   `subject` VARCHAR(255) NOT NULL,
   `message` TEXT NOT NULL,
+  `reply_content` TEXT NULL,
+  `replied_at` DATETIME NULL,
   `is_read` TINYINT(1) DEFAULT 0,
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -27,6 +27,28 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $saved = saveContactMessage($name, $email, $subject, $message);
 
 if ($saved) {
+    // Notify Admin (Malik Raheem) via email
+    $adminEmail = 'malik2341971@gmail.com';
+    $mailSubject = "Portfolio Inquiry from {$name}: {$subject}";
+    $mailBody = "Assalam-o-Alaikum Malik Raheem,\n\n"
+        . "You have received a new inquiry from your live portfolio:\n\n"
+        . "--------------------------------------------------\n"
+        . "Sender Name:   " . $name . "\n"
+        . "Sender Email:  " . $email . "\n"
+        . "Subject:       " . $subject . "\n"
+        . "Date & Time:   " . date('Y-m-d H:i:s') . "\n"
+        . "--------------------------------------------------\n\n"
+        . "Message:\n" . $message . "\n\n"
+        . "--------------------------------------------------\n"
+        . "You can reply to this message directly from your Admin Dashboard:\n"
+        . "https://iamraheem.com/admin/messages.php\n";
+
+    $headers = "From: portfolio@iamraheem.com\r\n"
+        . "Reply-To: {$email}\r\n"
+        . "X-Mailer: PHP/" . phpversion();
+
+    @mail($adminEmail, $mailSubject, $mailBody, $headers);
+
     echo json_encode([
         'success' => true,
         'message' => 'Thank you, ' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '! Your message regarding "' . htmlspecialchars($subject, ENT_QUOTES, 'UTF-8') . '" has been sent successfully. Malik Raheem will get back to you shortly.'

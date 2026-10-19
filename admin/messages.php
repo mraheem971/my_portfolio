@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Inbox Messages';
+$pageTitle = 'Inbox & Visitor Inquiries';
 require_once __DIR__ . '/header.php';
 
 $pdo = getDBConnection();
@@ -33,13 +33,54 @@ if (isset($_GET['mark_unread'])) {
     }
 }
 
+// Handle Direct Email Reply Submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'send_reply') {
+    $msgId = (int)($_POST['message_id'] ?? 0);
+    $recipientEmail = trim($_POST['recipient_email'] ?? '');
+    $recipientName = trim($_POST['recipient_name'] ?? '');
+    $replySubject = trim($_POST['reply_subject'] ?? '');
+    $replyContent = trim($_POST['reply_content'] ?? '');
+
+    if (empty($msgId) || empty($recipientEmail) || empty($replyContent)) {
+        $errorMsg = 'Please provide recipient email and a reply message.';
+    } else {
+        $adminEmail = 'malik2341971@gmail.com';
+        $adminName = 'Malik Raheem Bukhsh';
+
+        $headers = "From: " . $adminName . " <" . $adminEmail . ">\r\n"
+                 . "Reply-To: " . $adminEmail . "\r\n"
+                 . "MIME-Version: 1.0\r\n"
+                 . "Content-Type: text/plain; charset=UTF-8\r\n"
+                 . "X-Mailer: PHP/" . phpversion();
+
+        $mailSent = @mail($recipientEmail, $replySubject, $replyContent, $headers);
+
+        // Update database record
+        $upd = $pdo->prepare("UPDATE `messages` SET `reply_content` = ?, `replied_at` = NOW(), `is_read` = 1 WHERE `id` = ?");
+        $upd->execute([$replyContent, $msgId]);
+
+        if ($mailSent) {
+            $successMsg = "Reply successfully sent to {$recipientName} ({$recipientEmail}) from {$adminEmail}!";
+        } else {
+            $successMsg = "Reply saved to inquiry record! You can also click 'Open in Gmail' below to ensure direct personal delivery.";
+        }
+    }
+}
+
 // Filter
 $filter = $_GET['filter'] ?? 'all';
-$onlyUnread = ($filter === 'unread');
+$sql = "SELECT * FROM `messages`";
+if ($filter === 'unread') {
+    $sql .= " WHERE `is_read` = 0";
+} elseif ($filter === 'replied') {
+    $sql .= " WHERE `replied_at` IS NOT NULL";
+}
+$sql .= " ORDER BY `created_at` DESC LIMIT 100";
 
-$messages = getMessages(100, $onlyUnread);
+$messages = $pdo->query($sql)->fetchAll();
 $unreadCount = getUnreadMessageCount();
 $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn();
+$repliedCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages` WHERE `replied_at` IS NOT NULL")->fetchColumn();
 ?>
 
 <?php if (!empty($successMsg)): ?>
@@ -56,19 +97,23 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
     </div>
 <?php endif; ?>
 
-<!-- Filter Tabs -->
+<!-- Filter Tabs & Admin Account Info -->
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
-    <div style="display: flex; gap: 10px;">
-        <a href="messages.php?filter=all" class="btn <?= $filter !== 'unread' ? 'btn-primary' : 'btn-outline' ?>">
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="messages.php?filter=all" class="btn <?= $filter === 'all' ? 'btn-primary' : 'btn-outline' ?>">
             <i class="fa-solid fa-inbox"></i> All Inquiries (<?= $totalCount ?>)
         </a>
         <a href="messages.php?filter=unread" class="btn <?= $filter === 'unread' ? 'btn-primary' : 'btn-outline' ?>">
-            <i class="fa-solid fa-envelope-open-text"></i> Unread Only (<?= $unreadCount ?>)
+            <i class="fa-solid fa-envelope-open-text"></i> Unread (<?= $unreadCount ?>)
+        </a>
+        <a href="messages.php?filter=replied" class="btn <?= $filter === 'replied' ? 'btn-primary' : 'btn-outline' ?>">
+            <i class="fa-solid fa-check-double"></i> Replied (<?= $repliedCount ?>)
         </a>
     </div>
 
-    <div style="color: var(--adm-text-muted); font-size: 0.88rem;">
-        <i class="fa-solid fa-circle-info"></i> Messages sent via your portfolio contact form are stored securely here in MySQL.
+    <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; color: #818cf8; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Admin Reply Account: <strong style="color: #ffffff;">malik2341971@gmail.com</strong></span>
     </div>
 </div>
 
@@ -77,10 +122,10 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
     <div class="card-header">
         <h3>
             <i class="fa-solid fa-envelope"></i>
-            <?= $filter === 'unread' ? 'Unread Inquiries' : 'All Received Messages' ?>
+            <?= $filter === 'unread' ? 'Unread Messages' : ($filter === 'replied' ? 'Answered Messages' : 'All Received Messages') ?>
         </h3>
         <span style="font-size: 0.85rem; color: var(--adm-text-muted);">
-            Showing <?= count($messages) ?> message<?= count($messages) === 1 ? '' : 's' ?>
+            Showing <?= count($messages) ?> inquiry<?= count($messages) === 1 ? '' : 'ies' ?>
         </span>
     </div>
 
@@ -89,24 +134,28 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
             <table class="adm-table">
                 <thead>
                     <tr>
-                        <th style="width: 100px;">Status</th>
+                        <th style="width: 110px;">Status</th>
                         <th>Sender Name</th>
                         <th>Email Address</th>
                         <th>Subject</th>
-                        <th>Date & Time</th>
-                        <th style="width: 160px; text-align: right;">Actions</th>
+                        <th>Received</th>
+                        <th style="width: 170px; text-align: right;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($messages as $msg): ?>
                         <tr style="<?= empty($msg['is_read']) ? 'background: rgba(99, 102, 241, 0.05); font-weight: 500;' : '' ?>">
                             <td>
-                                <?php if (empty($msg['is_read'])): ?>
-                                    <span style="background: rgba(239, 68, 68, 0.15); color: var(--adm-danger); border: 1px solid rgba(239, 68, 68, 0.3); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+                                <?php if (!empty($msg['replied_at'])): ?>
+                                    <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                        <i class="fa-solid fa-check-double"></i> Replied
+                                    </span>
+                                <?php elseif (empty($msg['is_read'])): ?>
+                                    <span class="badge" style="background: rgba(239, 68, 68, 0.15); color: var(--adm-danger); border: 1px solid rgba(239, 68, 68, 0.3);">
                                         <i class="fa-solid fa-circle" style="font-size: 0.5rem; vertical-align: middle; margin-right: 4px;"></i> New
                                     </span>
                                 <?php else: ?>
-                                    <span style="background: rgba(148, 163, 184, 0.1); color: var(--adm-text-muted); padding: 3px 8px; border-radius: 6px; font-size: 0.75rem;">
+                                    <span class="badge" style="background: rgba(148, 163, 184, 0.1); color: var(--adm-text-muted);">
                                         Read
                                     </span>
                                 <?php endif; ?>
@@ -126,9 +175,9 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
                                 <?= date('M d, Y h:i A', strtotime($msg['created_at'])) ?>
                             </td>
                             <td style="text-align: right;">
-                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                    <button type="button" class="btn btn-outline btn-sm" onclick='viewMessage(<?= json_encode($msg, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)' title="View Full Message">
-                                        <i class="fa-solid fa-eye"></i>
+                                <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick='viewMessage(<?= json_encode($msg, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)' title="View & Reply to Visitor">
+                                        <i class="fa-solid fa-reply"></i> Reply
                                     </button>
 
                                     <?php if (empty($msg['is_read'])): ?>
@@ -141,7 +190,7 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
                                         </a>
                                     <?php endif; ?>
 
-                                    <a href="messages.php?delete=<?= $msg['id'] ?>&filter=<?= $filter ?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this message permanently?');" title="Delete">
+                                    <a href="messages.php?delete=<?= $msg['id'] ?>&filter=<?= $filter ?>" class="btn btn-outline btn-sm" style="color: var(--adm-danger); border-color: rgba(239, 68, 68, 0.3);" onclick="return confirm('Delete this inquiry permanently?');" title="Delete">
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </div>
@@ -153,57 +202,109 @@ $totalCount = (int)$pdo->query("SELECT COUNT(*) FROM `messages`")->fetchColumn()
         <?php else: ?>
             <div style="text-align: center; padding: 40px 20px; color: var(--adm-text-muted);">
                 <i class="fa-regular fa-envelope-open" style="font-size: 3rem; margin-bottom: 14px; opacity: 0.4;"></i>
-                <p>No messages found <?= $filter === 'unread' ? 'under unread filter' : 'in your inbox yet' ?>.</p>
+                <p>No inquiries found in this category.</p>
             </div>
         <?php endif; ?>
     </div>
 </div>
 
-<!-- Modal: View Message Details -->
-<div id="messageModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px;">
-    <div style="background-color: var(--adm-card); border: 1px solid var(--adm-border); border-radius: var(--adm-radius); max-width: 600px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow: hidden;">
-        <div style="padding: 20px 24px; border-bottom: 1px solid var(--adm-border); display: flex; justify-content: space-between; align-items: center;">
+<!-- Modal: View Message Details & Direct Reply Composer -->
+<div id="messageModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 999; backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; overflow-y: auto;">
+    <div style="background-color: var(--adm-card); border: 1px solid var(--adm-border); border-radius: 18px; max-width: 680px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.7); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column;">
+        <!-- Modal Header -->
+        <div style="padding: 18px 24px; border-bottom: 1px solid var(--adm-border); display: flex; justify-content: space-between; align-items: center; background: var(--adm-sidebar);">
             <h3 style="font-size: 1.15rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-envelope-open-text" style="color: var(--adm-primary);"></i>
-                <span>Message Details</span>
+                <span>Inquiry Details & Visitor Reply</span>
             </h3>
-            <button type="button" onclick="closeMessageModal()" style="background: transparent; border: none; color: var(--adm-text-muted); font-size: 1.3rem; cursor: pointer;">
+            <button type="button" onclick="closeMessageModal()" style="background: transparent; border: none; color: var(--adm-text-muted); font-size: 1.3rem; cursor: pointer; padding: 4px;">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
-        <div style="padding: 24px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; background: var(--adm-sidebar); padding: 16px; border-radius: var(--adm-radius-sm); border: 1px solid var(--adm-border);">
+        <div style="padding: 24px; overflow-y: auto;">
+            <!-- Sender Information Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; background: var(--adm-sidebar); padding: 16px; border-radius: var(--adm-radius-sm); border: 1px solid var(--adm-border);">
                 <div>
-                    <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">From:</span>
+                    <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Visitor Name:</span>
                     <div id="modalSender" style="font-size: 0.95rem; font-weight: 600; color: #ffffff; margin-top: 2px;"></div>
                 </div>
                 <div>
-                    <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Date:</span>
+                    <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Received Date:</span>
                     <div id="modalDate" style="font-size: 0.85rem; color: var(--adm-text-muted); margin-top: 2px;"></div>
                 </div>
-                <div style="grid-column: 1 / -1;">
-                    <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Email:</span>
+                <div>
+                    <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Visitor Email:</span>
                     <div>
-                        <a id="modalEmail" href="" style="color: var(--adm-primary); font-size: 0.92rem; text-decoration: underline;"></a>
+                        <a id="modalEmail" href="" style="color: var(--adm-primary); font-size: 0.9rem; text-decoration: underline;"></a>
                     </div>
                 </div>
-                <div style="grid-column: 1 / -1;">
-                    <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Subject:</span>
-                    <div id="modalSubject" style="font-size: 1rem; font-weight: 600; color: #ffffff; margin-top: 2px;"></div>
+                <div>
+                    <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600;">Inquiry Subject:</span>
+                    <div id="modalSubject" style="font-size: 0.9rem; font-weight: 600; color: #ffffff; margin-top: 2px;"></div>
                 </div>
             </div>
 
+            <!-- Original Message Body -->
             <div style="margin-bottom: 24px;">
-                <label style="font-size: 0.82rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600; margin-bottom: 8px; display: block;">Message Body:</label>
-                <div id="modalBody" style="background-color: var(--adm-sidebar); border: 1px solid var(--adm-border); border-radius: var(--adm-radius-sm); padding: 18px; color: #e2e8f0; line-height: 1.7; font-size: 0.92rem; white-space: pre-wrap; max-height: 250px; overflow-y: auto;"></div>
+                <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--adm-text-muted); font-weight: 600; margin-bottom: 8px; display: block;">Visitor's Message:</label>
+                <div id="modalBody" style="background-color: var(--adm-sidebar); border: 1px solid var(--adm-border); border-radius: var(--adm-radius-sm); padding: 14px 18px; color: #e2e8f0; line-height: 1.6; font-size: 0.9rem; white-space: pre-wrap; max-height: 160px; overflow-y: auto;"></div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--adm-border); padding-top: 18px;">
-                <a id="modalReplyBtn" href="" class="btn btn-primary">
-                    <i class="fa-solid fa-reply"></i> Reply via Email
-                </a>
-                <button type="button" class="btn btn-outline" onclick="closeMessageModal()">Close</button>
+            <!-- Existing Reply Section (if already replied) -->
+            <div id="existingReplyBox" style="display: none; margin-bottom: 24px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--adm-radius-sm); padding: 16px;">
+                <div style="font-size: 0.82rem; font-weight: 700; color: #10b981; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-check-circle"></i>
+                    <span>Previous Reply Sent from malik2341971@gmail.com</span>
+                    <span id="existingReplyDate" style="font-weight: 400; color: var(--adm-text-muted); margin-left: auto;"></span>
+                </div>
+                <div id="existingReplyContent" style="color: #f1f5f9; font-size: 0.88rem; line-height: 1.6; white-space: pre-wrap;"></div>
+            </div>
+
+            <!-- Direct Reply Composer Form -->
+            <div style="border-top: 1px solid var(--adm-border); padding-top: 20px;">
+                <h4 style="font-size: 1rem; color: #ffffff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-reply" style="color: var(--adm-primary);"></i>
+                    <span>Compose Reply from <span style="color: var(--adm-primary);">malik2341971@gmail.com</span></span>
+                </h4>
+
+                <form action="messages.php" method="POST" id="replyForm">
+                    <input type="hidden" name="action" value="send_reply">
+                    <input type="hidden" name="message_id" id="replyMsgId">
+                    <input type="hidden" name="recipient_email" id="replyRecipientEmail">
+                    <input type="hidden" name="recipient_name" id="replyRecipientName">
+
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="replySubjectInput" style="font-size: 0.82rem;">Subject</label>
+                        <input type="text" id="replySubjectInput" name="reply_subject" class="form-control" required style="font-size: 0.9rem;">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label for="replyBodyInput" style="font-size: 0.82rem;">Reply Message</label>
+                        <textarea id="replyBodyInput" name="reply_content" class="form-control" rows="6" required style="font-size: 0.9rem; line-height: 1.6; font-family: inherit;"></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">
+                                <i class="fa-solid fa-paper-plane"></i> Send Email to Visitor
+                            </button>
+
+                            <a id="gmailDirectBtn" href="" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding: 10px 18px; border-color: #ea4335; color: #ea4335;">
+                                <i class="fa-brands fa-google"></i> Open in Gmail
+                            </a>
+
+                            <a id="modalMailtoBtn" href="" class="btn btn-outline" style="padding: 10px 18px;">
+                                <i class="fa-solid fa-envelope"></i> Default Mail
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-outline" onclick="closeMessageModal()" style="padding: 10px 18px;">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -220,9 +321,50 @@ function viewMessage(msg) {
     
     document.getElementById('modalSubject').textContent = msg.subject;
     document.getElementById('modalBody').textContent = msg.message;
+
+    // Fill hidden and editable reply form fields
+    document.getElementById('replyMsgId').value = msg.id;
+    document.getElementById('replyRecipientEmail').value = msg.email;
+    document.getElementById('replyRecipientName').value = msg.name;
     
-    const replyBtn = document.getElementById('modalReplyBtn');
-    replyBtn.href = 'mailto:' + encodeURIComponent(msg.email) + '?subject=' + encodeURIComponent('Re: ' + msg.subject);
+    const replySubject = msg.subject.startsWith('Re:') ? msg.subject : ('Re: ' + msg.subject);
+    document.getElementById('replySubjectInput').value = replySubject;
+
+    const defaultReplyText = "Dear " + msg.name + ",\n\n"
+        + "Thank you for reaching out through my portfolio. Regarding your message:\n"
+        + "\"" + (msg.message.length > 150 ? msg.message.substring(0, 150) + "..." : msg.message) + "\"\n\n"
+        + "I would be glad to discuss this further with you.\n\n"
+        + "Best regards,\n"
+        + "Malik Raheem Bukhsh\n"
+        + "Web & Android App Developer\n"
+        + "Email: malik2341971@gmail.com\n"
+        + "WhatsApp: +92 304 2341971\n"
+        + "Portfolio: https://iamraheem.com";
+
+    document.getElementById('replyBodyInput').value = msg.reply_content ? msg.reply_content : defaultReplyText;
+
+    // Check if previously replied
+    const existingBox = document.getElementById('existingReplyBox');
+    if (msg.reply_content) {
+        document.getElementById('existingReplyContent').textContent = msg.reply_content;
+        document.getElementById('existingReplyDate').textContent = msg.replied_at || '';
+        existingBox.style.display = 'block';
+    } else {
+        existingBox.style.display = 'none';
+    }
+
+    // Gmail Direct Link (https://mail.google.com/mail/?view=cm&fs=1&to=...&su=...&body=...)
+    const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1'
+        + '&to=' + encodeURIComponent(msg.email)
+        + '&su=' + encodeURIComponent(replySubject)
+        + '&body=' + encodeURIComponent(defaultReplyText);
+    document.getElementById('gmailDirectBtn').href = gmailUrl;
+
+    // Default Mailto Link
+    const mailtoUrl = 'mailto:' + encodeURIComponent(msg.email)
+        + '?subject=' + encodeURIComponent(replySubject)
+        + '&body=' + encodeURIComponent(defaultReplyText);
+    document.getElementById('modalMailtoBtn').href = mailtoUrl;
 
     const modal = document.getElementById('messageModal');
     modal.style.display = 'flex';

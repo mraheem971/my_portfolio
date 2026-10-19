@@ -148,10 +148,19 @@ function initializeMySQLDatabase(PDO $pdo): void {
             `email` VARCHAR(100) NOT NULL,
             `subject` VARCHAR(255) NOT NULL,
             `message` TEXT NOT NULL,
+            `reply_content` TEXT NULL,
+            `replied_at` DATETIME NULL,
             `is_read` TINYINT(1) DEFAULT 0,
             `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
+
+    // Ensure reply columns exist if upgrading from older schema
+    try {
+        $pdo->exec("ALTER TABLE `messages` ADD COLUMN `reply_content` TEXT NULL, ADD COLUMN `replied_at` DATETIME NULL;");
+    } catch (PDOException $e) {
+        // Already exists
+    }
 
     // Check if initial settings already exist
     $chk = $pdo->query("SELECT COUNT(*) AS total FROM `settings`")->fetch();
