@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malik Raheem Bukhsh | Full Stack Developer & Professional Android App Developer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Interactive Custom Cursor Circles -->
+    <div class="cursor-circle-outer" id="cursorOuter"></div>
+    <div class="cursor-circle-dot" id="cursorDot"></div>
+
+    <!-- Navigation Bar -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="#home" class="logo">
+                <span class="logo-mark"><i class="fa-solid fa-terminal"></i></span>
+                Malik<span>Raheem</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#languages" class="nav-link">Languages</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Switch Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="hamburger-menu" id="menu-toggle" aria-label="Open Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav" id="mobile-nav">
+        <button class="close-menu" id="menu-close" aria-label="Close Menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#education" class="mobile-link">Education</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#languages" class="mobile-link">Languages</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-section section-padding">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content reveal reveal-left">
+                        <span class="greeting">Assalam-o-Alaikum, I'm</span>
+                        <h1 class="hero-name">Malik Raheem Bukhsh</h1>
+                        <h2 class="hero-title">Web & Android App Developer</h2>
+                        <p class="hero-desc">
+                            I am a motivated Web and Android App Developer from Pakistan with an interest in building modern, user-friendly, and practical software solutions. Currently pursuing BS Software Engineering (in progress).
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#contact" class="btn btn-primary"><i class="fa-regular fa-paper-plane"></i> Contact Me</a>
+                            <a href="#services" class="btn btn-outline"><i class="fa-solid fa-screwdriver-wrench"></i> My Services</a>
+                            <a href="https://wa.me/923042341971" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Chat Now</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Picture with Animated Rotating Rings -->
+                    <div class="hero-img-container reveal reveal-right">
+                        <div class="profile-circle-wrapper" id="profileCircleWrapper">
+                            <!-- Multi-layer animated glowing circular rings -->
+                            <div class="animated-circle-glow"></div>
+                            <div class="animated-circle-ring ring-outer"></div>
+                            <div class="animated-circle-ring ring-inner"></div>
+                            
+                            <!-- Pure circular frame holding the portrait -->
+                            <div class="profile-circle-frame">
+                                <img src="assets/profile.jpg" alt="Malik Raheem Bukhsh" class="profile-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Stats Quick Highlights -->
+                <div class="hero-stats-grid reveal reveal-up">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                        <div class="stat-info">
+                            <h4>BS Software Eng.</h4>
+                            <p>In Progress (2022 – Present)</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <div class="stat-info">
+                            <h4>IUB Bahawalpur</h4>
+                            <p>Islamia University of Bahawalpur</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <div class="stat-info">
+                            <h4>Web & Android</h4>
+                            <p>Full Stack & Native Apps</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="stat-info">
+                            <h4>Bahawalpur</h4>
+                            <p>Bahawalpur, Pakistan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section with Profile Picture Alongside -->
+        <section id="about" class="about-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Get To Know Me</span>
+                    <h2 class="section-title">About Me</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="about-grid">
+                    <!-- Profile Picture Card Alongside Bio -->
+                    <div class="about-image-column reveal reveal-left">
+                        <div class="about-profile-card">
+                            <div class="about-photo-wrap">
+                                <img src="assets/profile.jpg" alt="Malik Raheem Bukhsh" class="about-photo-img">
+                            </div>
+                            <div class="about-card-info">
+                                <h4>Malik Raheem Bukhsh</h4>
+                                <span class="about-card-role">Web & Android App Developer</span>
+                                <div class="about-status-pill">
+                                    <span class="status-indicator-dot"></span> Available for Projects
+                                </div>
+                            </div>
+                            <div class="about-quick-links">
+                                <a href="https://wa.me/923042341971" target="_blank" rel="noopener noreferrer" class="about-quick-btn" title="WhatsApp Direct" aria-label="WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                                <a href="mailto:malik2341971@gmail.com" class="about-quick-btn" title="Email Direct" aria-label="Email">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </a>
+                                <a href="https://instagram.com/malikraheem4113" target="_blank" rel="noopener noreferrer" class="about-quick-btn" title="Instagram Profile" aria-label="Instagram">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Profile & Background Card -->
+                    <div class="about-info-card reveal reveal-right">
+                        <h3>Personal Profile & Background</h3>
+                        <p>
+                            I am a motivated Web and Android App Developer from Pakistan with an interest in building modern, user-friendly, and practical software solutions. I enjoy developing websites, Android applications, and automation tools that solve real-world problems.
+                        </p>
+                        <p>
+                            Through my personal projects, I am continuously improving my technical skills, exploring new technologies, and learning better development practices. I am eager to contribute to development projects, gain professional experience, and grow as a software developer.
+                        </p>
+                        
+                        <div class="personal-details-grid">
+                            <div class="detail-card">
+                                <div class="detail-icon"><i class="fa-solid fa-user-tie"></i></div>
+                                <div class="detail-body">
+                                    <span class="detail-label">Father's Name</span>
+                                    <span class="detail-val">Hafiz Muhammad Ashiq</span>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div class="detail-body">
+                                    <span class="detail-label">Education</span>
+                                    <span class="detail-val">BS Software Engineering (In Progress)</span>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon"><i class="fa-solid fa-building-columns"></i></div>
+                                <div class="detail-body">
+                                    <span class="detail-label">Institution</span>
+                                    <span class="detail-val">The Islamia University of Bahawalpur (IUB)</span>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
+                                <div class="detail-body">
+                                    <span class="detail-label">Hometown</span>
+                                    <span class="detail-val">Bahawalpur, Pakistan</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section (Dedicated) -->
+        <section id="services" class="services-section section-padding">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">What I Offer</span>
+                    <h2 class="section-title">My Services</h2>
+                    <div class="line"></div>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Service 1: Professional Android App Development -->
+                    <div class="service-card reveal reveal-up delay-1">
+                        <div class="service-icon-box" style="background-color: rgba(61, 220, 132, 0.15); color: #3ddc84;">
+                            <i class="fa-brands fa-android"></i>
+                        </div>
+                        <h3>Professional Android App Development</h3>
+                        <p>Designing and engineering modern, intuitive native mobile applications with Java, Android Studio, Material Design guidelines, and responsive layouts.</p>
+                        <div class="service-tags">
+                            <span class="service-tag">Android Studio</span>
+                            <span class="service-tag">Java & SDK</span>
+                            <span class="service-tag">Material UI</span>
+                            <span class="service-tag">API Integration</span>
+                        </div>
+                    </div>
+
+                    <!-- Service 2: Full Stack Web Engineering -->
+                    <div class="service-card reveal reveal-up delay-2">
+                        <div class="service-icon-box" style="background-color: rgba(99, 102, 241, 0.15); color: #6366f1;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h3>Full Stack Web Engineering</h3>
+                        <p>Architecting complete front-to-back responsive web platforms with modern HTML5, CSS3, JavaScript, Python backend logic, Laravel, and RESTful APIs.</p>
+                        <div class="service-tags">
+                            <span class="service-tag">HTML5 / CSS3 / JS</span>
+                            <span class="service-tag">Python & Laravel</span>
+                            <span class="service-tag">RESTful APIs</span>
+                            <span class="service-tag">Clean Architecture</span>
+                        </div>
+                    </div>
+
+                    <!-- Service 3: AI-Assisted & Vibe Coding -->
+                    <div class="service-card reveal reveal-up delay-3">
+                        <div class="service-icon-box" style="background-color: rgba(236, 72, 153, 0.15); color: #ec4899;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3>AI-Assisted & Vibe Coding</h3>
+                        <p>Leveraging cutting-edge AI workflows, prompt engineering, and rapid iterative development to prototype tools, solve complex problems, and automate code logic.</p>
+                        <div class="service-tags">
+                            <span class="service-tag">AI Workflows</span>
+                            <span class="service-tag">Rapid Prototyping</span>
+                            <span class="service-tag">Prompt Engineering</span>
+                            <span class="service-tag">Automation</span>
+                        </div>
+                    </div>
+
+                    <!-- Service 4: Office Productivity & Typography -->
+                    <div class="service-card reveal reveal-up delay-4">
+                        <div class="service-icon-box" style="background-color: rgba(43, 87, 154, 0.15); color: #2b579a;">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <h3>Office Productivity & Typography</h3>
+                        <p>Executive documentation, automated Excel spreadsheets, dynamic presentations with MS PowerPoint, and professional desktop publishing in Inpage Urdu.</p>
+                        <div class="service-tags">
+                            <span class="service-tag">MS Word</span>
+                            <span class="service-tag">MS Excel</span>
+                            <span class="service-tag">PowerPoint</span>
+                            <span class="service-tag">Inpage Urdu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section (Featured Showcase) -->
+        <section id="projects" class="projects-section section-padding">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Featured Showcase</span>
+                    <h2 class="section-title">My Projects</h2>
+                    <div class="line"></div>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card reveal reveal-up delay-1">
+                        <!-- Card Image Header -->
+                        <div class="project-card-image">
+                            <img src="assets/socialmate.png" alt="SocialMate – WhatsApp Bot SaaS Dashboard">
+                            <div class="project-card-overlay"></div>
+                            <span class="project-card-badge">
+                                <i class="fa-solid fa-star"></i> Featured
+                            </span>
+                            <a href="https://socialmate.iamraheem.com" target="_blank" rel="noopener noreferrer" class="project-card-link-badge" title="Live Preview">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                        <!-- Card Body: Tagline, Title, Description, Stack, Actions -->
+                        <div class="project-card-body">
+                            <div class="project-card-tagline">WhatsApp Automation SaaS</div>
+                            <h3 class="project-card-title">SocialMate – WhatsApp Bot SaaS Dashboard</h3>
+
+                            <p class="project-card-desc">
+                                Developed <strong>SocialMate</strong>, a modern WhatsApp automation platform that helps businesses manage WhatsApp accounts, automate customer replies, organize contacts and groups, create message templates, and run marketing campaigns.
+                            </p>
+
+                            <div class="project-card-tech">
+                                <span class="tech-tag-sm"><i class="fa-solid fa-code"></i> Blade</span>
+                                <span class="tech-tag-sm"><i class="fa-brands fa-php"></i> PHP</span>
+                                <span class="tech-tag-sm"><i class="fa-brands fa-laravel"></i> Laravel</span>
+                                <span class="tech-tag-sm"><i class="fa-brands fa-css3-alt"></i> CSS</span>
+                                <span class="tech-tag-sm"><i class="fa-brands fa-js"></i> JavaScript</span>
+                            </div>
+
+                            <div class="project-card-actions">
+                                <a href="https://socialmate.iamraheem.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/mraheem971/auto-whatsapp.git" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: CampusMate Android App -->
+                    <div class="project-card reveal reveal-up delay-2">
+                        <!-- Card Image Header -->
+                        <div class="project-card-image">
+                            <img src="assets/campusmate.png" alt="CampusMate – Student Portal & Attendance Android App">
+                            <div class="project-card-overlay"></div>
+                            <span class="project-card-badge">
+                                <i class="fa-solid fa-star"></i> Featured
+                            </span>
+                            <a href="https://github.com/mraheem971" target="_blank" rel="noopener noreferrer" class="project-card-link-badge" title="Live Preview">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+
+                        <!-- Card Body: Tagline, Title, Description, Stack, Actions -->
+                        <div class="project-card-body">
+                            <div class="project-card-tagline">Native Android Application</div>
+                            <h3 class="project-card-title">CampusMate – Student Portal & Attendance Android App</h3>
+
+                            <p class="project-card-desc">
+                                Developed <strong>CampusMate</strong>, an intuitive Android application for university students to monitor academic attendance percentages, lecture schedules, CGPA metrics, and real-time announcements with offline caching and Firebase sync.
+                            </p>
+
+                            <div class="project-card-tech">
+                                <span class="tech-tag-sm"><i class="fa-brands fa-android"></i> Android</span>
+                                <span class="tech-tag-sm"><i class="fa-brands fa-java"></i> Java</span>
+                                <span class="tech-tag-sm"><i class="fa-solid fa-fire"></i> Firebase</span>
+                                <span class="tech-tag-sm"><i class="fa-solid fa-database"></i> SQLite</span>
+                                <span class="tech-tag-sm"><i class="fa-solid fa-layer-group"></i> Material UI</span>
+                            </div>
+
+                            <div class="project-card-actions">
+                                <a href="https://github.com/mraheem971" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Demo
+                                </a>
+                                <a href="https://github.com/mraheem971" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="education-section section-padding">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Academic Qualifications</span>
+                    <h2 class="section-title">My Education</h2>
+                    <div class="line"></div>
+                </div>
+
+                <div class="education-grid">
+                    <!-- University Degree -->
+                    <div class="education-card featured-degree reveal reveal-left">
+                        <div class="education-card-header">
+                            <div class="education-icon">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span class="edu-status-badge in-progress"><i class="fa-solid fa-spinner fa-spin-pulse"></i> In Progress</span>
+                        </div>
+                        <div class="education-content">
+                            <span class="edu-duration">2022 – Present</span>
+                            <h3 class="edu-degree">BS Software Engineering</h3>
+                            <h4 class="edu-institution"><i class="fa-solid fa-building-columns"></i> The Islamia University of Bahawalpur (IUB)</h4>
+                            <p class="edu-desc">
+                                Pursuing an engineering degree covering core computer science principles, modern software architecture, database management, and mobile & web development practices.
+                            </p>
+                            <div class="edu-highlights">
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Data Structures & Algorithms</span>
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Object-Oriented Programming (OOP)</span>
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Database Systems (DBMS)</span>
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Android & Web Engineering</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intermediate / College -->
+                    <div class="education-card reveal reveal-right">
+                        <div class="education-card-header">
+                            <div class="education-icon intermediate-edu">
+                                <i class="fa-solid fa-school"></i>
+                            </div>
+                            <span class="edu-status-badge completed"><i class="fa-solid fa-circle-check"></i> Completed</span>
+                        </div>
+                        <div class="education-content">
+                            <span class="edu-duration">Pre-University</span>
+                            <h3 class="edu-degree">Intermediate / Higher Secondary Certificate</h3>
+                            <h4 class="edu-institution"><i class="fa-solid fa-location-dot"></i> Bahawalpur, Pakistan</h4>
+                            <p class="edu-desc">
+                                Solid foundation in mathematics, analytical logic, and computer fundamentals providing the groundwork for software engineering studies.
+                            </p>
+                            <div class="edu-highlights">
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Computer Science</span>
+                                <span class="highlight-tag"><i class="fa-solid fa-check"></i> Analytical Mathematics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section section-padding">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Technical Proficiency</span>
+                    <h2 class="section-title">My Skills & Expertise</h2>
+                    <div class="line"></div>
+                </div>
+
+                <!-- Development & Programming -->
+                <div class="skills-category-block reveal reveal-up">
+                    <h3 class="skills-category-title"><i class="fa-solid fa-code"></i> Development & Programming</h3>
+                    <div class="skills-tech-grid">
+                        <!-- Python Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-1">
+                            <div class="skill-card-icon" style="color: #3776ab;">
+                                <i class="fa-brands fa-python"></i>
+                            </div>
+                            <h3 class="skill-card-title">Python</h3>
+                        </div>
+
+                        <!-- HTML Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-2">
+                            <div class="skill-card-icon" style="color: #e34f26;">
+                                <i class="fa-brands fa-html5"></i>
+                            </div>
+                            <h3 class="skill-card-title">HTML</h3>
+                        </div>
+
+                        <!-- CSS Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-3">
+                            <div class="skill-card-icon" style="color: #1572b6;">
+                                <i class="fa-brands fa-css3-alt"></i>
+                            </div>
+                            <h3 class="skill-card-title">CSS</h3>
+                        </div>
+
+                        <!-- JavaScript Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-4">
+                            <div class="skill-card-icon" style="color: #f7df1e;">
+                                <i class="fa-brands fa-square-js"></i>
+                            </div>
+                            <h3 class="skill-card-title">JavaScript</h3>
+                        </div>
+
+                        <!-- Laravel Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-5">
+                            <div class="skill-card-icon" style="color: #ff2d20;">
+                                <i class="fa-brands fa-laravel"></i>
+                            </div>
+                            <h3 class="skill-card-title">Laravel</h3>
+                        </div>
+
+                        <!-- Android Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-6">
+                            <div class="skill-card-icon" style="color: #3ddc84;">
+                                <i class="fa-brands fa-android"></i>
+                            </div>
+                            <h3 class="skill-card-title">Android</h3>
+                        </div>
+
+                        <!-- Vibe Coding Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-7">
+                            <div class="skill-card-icon" style="color: #ec4899;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h3 class="skill-card-title">Vibe Coding</h3>
+                        </div>
+
+                        <!-- AI Assistant Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-8">
+                            <div class="skill-card-icon" style="color: #06b6d4;">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <h3 class="skill-card-title">AI Assistant</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Office Productivity & Typography -->
+                <div class="skills-category-block reveal reveal-up">
+                    <h3 class="skills-category-title"><i class="fa-solid fa-file-lines"></i> Office Productivity & Typography</h3>
+                    <div class="skills-tech-grid">
+                        <!-- MS Word Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-1">
+                            <div class="skill-card-icon" style="color: #2b579a;">
+                                <i class="fa-regular fa-file-word"></i>
+                            </div>
+                            <h3 class="skill-card-title">MS Word</h3>
+                        </div>
+
+                        <!-- MS Excel Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-2">
+                            <div class="skill-card-icon" style="color: #217346;">
+                                <i class="fa-regular fa-file-excel"></i>
+                            </div>
+                            <h3 class="skill-card-title">MS Excel</h3>
+                        </div>
+
+                        <!-- MS PowerPoint Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-3">
+                            <div class="skill-card-icon" style="color: #d24726;">
+                                <i class="fa-regular fa-file-powerpoint"></i>
+                            </div>
+                            <h3 class="skill-card-title">MS PowerPoint</h3>
+                        </div>
+
+                        <!-- Inpage Card -->
+                        <div class="skill-card-item reveal reveal-scale delay-4">
+                            <div class="skill-card-icon" style="color: #8b5cf6;">
+                                <i class="fa-solid fa-keyboard"></i>
+                            </div>
+                            <h3 class="skill-card-title">Inpage</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Languages Section -->
+        <section id="languages" class="languages-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Communication & Fluency</span>
+                    <h2 class="section-title">Languages</h2>
+                    <div class="line"></div>
+                </div>
+
+                <div class="languages-row-grid">
+                    <!-- Urdu Card -->
+                    <div class="lang-row-card reveal reveal-left">
+                        <div class="lang-row-icon">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <div class="lang-row-info">
+                            <h3 class="lang-row-title">Urdu</h3>
+                            <span class="lang-row-level">Native / Strong</span>
+                        </div>
+                    </div>
+
+                    <!-- English Card -->
+                    <div class="lang-row-card reveal reveal-right">
+                        <div class="lang-row-icon">
+                            <i class="fa-solid fa-language"></i>
+                        </div>
+                        <div class="lang-row-info">
+                            <h3 class="lang-row-title">English</h3>
+                            <span class="lang-row-level">Basic</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section section-padding">
+            <div class="container">
+                <div class="section-header reveal reveal-down">
+                    <span class="sub-title">Get In Touch</span>
+                    <h2 class="section-title">Let's Connect</h2>
+                    <div class="line"></div>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- Contact Cards -->
+                    <div class="contact-info reveal reveal-left">
+                        <h3>Connect With Me</h3>
+                        <p>
+                            Interested in collaborating, hiring for junior web development projects, or discussing academic work? Reach out via WhatsApp, Instagram, or direct email.
+                        </p>
+                        
+                        <div class="contact-cards-container">
+                            <!-- WhatsApp Card -->
+                            <a href="https://wa.me/923042341971" target="_blank" rel="noopener noreferrer" class="contact-card">
+                                <div class="contact-icon whatsapp"><i class="fa-brands fa-whatsapp"></i></div>
+                                <div class="contact-text">
+                                    <h4>WhatsApp Direct</h4>
+                                    <span>+92 304 2341971</span>
+                                </div>
+                                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                            </a>
+
+                            <!-- Email Card -->
+                            <a href="mailto:malik2341971@gmail.com" class="contact-card">
+                                <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                                <div class="contact-text">
+                                    <h4>Email Address</h4>
+                                    <span>malik2341971@gmail.com</span>
+                                </div>
+                                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                            </a>
+
+                            <!-- Instagram Card -->
+                            <a href="https://instagram.com/malikraheem4113" target="_blank" rel="noopener noreferrer" class="contact-card">
+                                <div class="contact-icon instagram"><i class="fa-brands fa-instagram"></i></div>
+                                <div class="contact-text">
+                                    <h4>Instagram Profile</h4>
+                                    <span>@malikraheem4113</span>
+                                </div>
+                                <div class="contact-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="contact-form-box">
+                        <h3>Send A Direct Message</h3>
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" required placeholder="e.g. Ali Khan">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" required placeholder="e.g. yourname@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" required placeholder="e.g. Web Development / Android App / Project Inquiry">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" rows="4" required placeholder="Write your message or project inquiry here..."></textarea>
+                            </div>
+                            <div class="form-group captcha-group">
+                                <label for="captchaAnswer">
+                                    <i class="fa-solid fa-shield-halved"></i> Quick Verification: 
+                                    <span class="captcha-badge">Prove you're human</span>
+                                </label>
+                                <div class="captcha-box">
+                                    <span class="captcha-question" id="captchaQuestion">7 + 4 = ?</span>
+                                    <input type="number" id="captchaAnswer" required placeholder="Answer" class="captcha-input">
+                                    <button type="button" id="refreshCaptchaBtn" class="captcha-refresh-btn" title="Refresh challenge" aria-label="Refresh Captcha">
+                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <span>Send Message</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                        <div id="form-message" class="form-status-msg hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <p>&copy; 2026 Malik Raheem Bukhsh. All Rights Reserved.</p>
+            </div>
+            <div class="footer-center">
+                <p>Designed with <i class="fa-solid fa-heart heart-icon"></i> & Dedication by Malik Raheem</p>
+            </div>
+            <div class="footer-right">
+                <a href="https://wa.me/923042341971" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://instagram.com/malikraheem4113" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="mailto:malik2341971@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Circular Scroll Progress & Back to Top Widget -->
+    <div class="scroll-progress-widget" id="scrollProgressWidget" title="Scroll to top">
+        <svg class="progress-ring" width="56" height="56">
+            <circle class="progress-ring-bg" stroke="var(--border-color)" stroke-width="4" fill="transparent" r="24" cx="28" cy="28"/>
+            <circle class="progress-ring-circle" id="progressRingCircle" stroke="var(--primary-color)" stroke-width="4" stroke-linecap="round" fill="transparent" r="24" cx="28" cy="28"/>
+        </svg>
+        <div class="progress-ring-content">
+            <i class="fa-solid fa-arrow-up"></i>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
