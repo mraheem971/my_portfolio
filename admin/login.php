@@ -7,13 +7,10 @@ if (isAdminLoggedIn()) {
     exit;
 }
 
-// Secret Access Gate: Deny regular visitors and redirect to public homepage
-if (isset($_GET['key']) && $_GET['key'] === ADMIN_SECRET_KEY) {
-    $_SESSION['admin_gate_unlocked'] = true;
-}
-
-if (empty($_SESSION['admin_gate_unlocked'])) {
-    header("Location: ../index.php");
+// Ensure trailing slash if visited as /admin
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+if (substr($uri, -6) === '/admin') {
+    header("Location: /admin/login.php");
     exit;
 }
 
@@ -104,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css?v=<?= time() ?>">
     <style>
         .password-input-wrapper {
             position: relative;

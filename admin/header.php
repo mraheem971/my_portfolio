@@ -21,7 +21,7 @@ $unreadCount = getUnreadMessageCount();
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css?v=<?= time() ?>">
 </head>
 <body>
     <!-- Sidebar -->

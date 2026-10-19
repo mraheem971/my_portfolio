@@ -4,11 +4,22 @@
  * Configured for XAMPP / Local MySQL
  */
 
-define('DB_HOST', 'localhost');
-define('DB_PORT', '3306');
-define('DB_NAME', 'my_portfolio');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Environment Auto-Detection (Local vs Hostinger Production)
+$isProduction = file_exists('/home/u858498424') || (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'iamraheem.com') !== false);
+
+if ($isProduction) {
+    define('DB_HOST', 'localhost');
+    define('DB_PORT', '3306');
+    define('DB_NAME', 'u858498424_my_portfolio');
+    define('DB_USER', 'u858498424_malik');
+    define('DB_PASS', 'M@lik2341971');
+} else {
+    define('DB_HOST', 'localhost');
+    define('DB_PORT', '3306');
+    define('DB_NAME', 'my_portfolio');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+}
 
 function getDBConnection(): PDO {
     static $pdo = null;
@@ -16,18 +27,10 @@ function getDBConnection(): PDO {
         return $pdo;
     }
 
-    try {
-        // Connect to MySQL server first to ensure database exists
-        $serverDsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4";
-        $serverPdo = new PDO($serverDsn, DB_USER, DB_PASS, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
-        
-        $serverPdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+    $dbDsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
 
-        // Now connect to the database
-        $dbDsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    try {
+        // Connect directly to the database
         $pdo = new PDO($dbDsn, DB_USER, DB_PASS, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -38,7 +41,28 @@ function getDBConnection(): PDO {
         initializeMySQLDatabase($pdo);
 
     } catch (PDOException $e) {
-        die("MySQL Database Connection Error: " . htmlspecialchars($e->getMessage()));
+        // Local environment: attempt to create database if it doesn't exist
+        if (strpos($e->getMessage(), 'Unknown database') !== false && !defined('DB_NAME_CREATED')) {
+            try {
+                $serverDsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";charset=utf8mb4";
+                $serverPdo = new PDO($serverDsn, DB_USER, DB_PASS, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]);
+                $serverPdo->exec("CREATE DATABASE IF NOT EXISTS `" . DB_NAME . "` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                define('DB_NAME_CREATED', true);
+
+                $pdo = new PDO($dbDsn, DB_USER, DB_PASS, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
+                ]);
+                initializeMySQLDatabase($pdo);
+            } catch (PDOException $ex) {
+                die("MySQL Database Connection Error: " . htmlspecialchars($ex->getMessage()));
+            }
+        } else {
+            die("MySQL Database Connection Error: " . htmlspecialchars($e->getMessage()));
+        }
     }
 
     return $pdo;
