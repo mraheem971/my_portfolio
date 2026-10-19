@@ -106,13 +106,28 @@ CREATE TABLE IF NOT EXISTS `projects` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------
+-- 9. Services Table
+-- ---------------------------------------------------
+CREATE TABLE IF NOT EXISTS `services` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT NOT NULL,
+  `icon_class` VARCHAR(100) DEFAULT 'fa-solid fa-code',
+  `icon_color` VARCHAR(50) DEFAULT '#6366f1',
+  `tags` VARCHAR(255) NULL,
+  `sort_order` INT DEFAULT 1,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------
 -- Initial Seed Data
 -- ---------------------------------------------------
 
--- Default Admin User (username: admin, password: admin123)
+-- Admin User (email: malik2341971@gmail.com, password: m@lik786)
 INSERT INTO `admin_users` (`username`, `password_hash`, `email`) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'malik2341971@gmail.com')
-ON DUPLICATE KEY UPDATE `email` = VALUES(`email`);
+VALUES ('malikraheem', '$2y$10$4IV6qF8KycHs1.g94jRE6OEVIf9KGuhIwQH/7YIyW6r/SAsisS1l.', 'malik2341971@gmail.com')
+ON DUPLICATE KEY UPDATE `email` = VALUES(`email`), `password_hash` = VALUES(`password_hash`);
 
 -- Settings
 INSERT INTO `settings` (`key_name`, `key_value`) VALUES
@@ -168,4 +183,11 @@ INSERT INTO `languages` (`name`, `level`, `icon_class`, `sort_order`) VALUES
 INSERT INTO `projects` (`title`, `tagline`, `description`, `image_url`, `github_url`, `live_url`, `technologies`, `is_featured`, `sort_order`) VALUES
 ('SocialMate – WhatsApp Bot SaaS Dashboard', 'WhatsApp Automation & Marketing SaaS Platform', 'Developed SocialMate, a modern WhatsApp automation platform that helps businesses manage WhatsApp accounts, automate customer replies, organize contacts and groups, create message templates, and run marketing campaigns. The dashboard includes gateway management, API integration, messaging logs, anti-ban settings, and subscription plan management, providing an efficient solution for customer communication and business automation.', 'assets/socialmate.png', 'https://github.com/mraheem971/auto-whatsapp.git', 'https://socialmate.iamraheem.com', 'Blade, PHP, Laravel, CSS, JavaScript', 1, 1),
 ('CampusMate – Student Portal & Attendance Android App', 'Native Android Mobile Application', 'Developed CampusMate, an intuitive Android application for university students to monitor academic attendance percentages, lecture schedules, CGPA metrics, and real-time department announcements with offline caching and Firebase synchronization.', 'assets/campusmate.png', 'https://github.com/mraheem971', 'https://github.com/mraheem971', 'Android Studio, Java, Firebase, SQLite, Material UI', 1, 2);
+
+-- Services
+INSERT INTO `services` (`title`, `description`, `icon_class`, `icon_color`, `tags`, `sort_order`, `is_active`) VALUES
+('Professional Android App Development', 'Designing and engineering modern, intuitive native mobile applications with Java, Android Studio, Material Design guidelines, and responsive layouts.', 'fa-brands fa-android', '#3ddc84', 'Android Studio, Java & SDK, Material UI, API Integration', 1, 1),
+('Full Stack Web Engineering', 'Architecting complete front-to-back responsive web platforms with modern HTML5, CSS3, JavaScript, Python backend logic, Laravel, and RESTful APIs.', 'fa-solid fa-layer-group', '#6366f1', 'HTML5 / CSS3 / JS, Python & Laravel, RESTful APIs, Clean Architecture', 2, 1),
+('AI-Assisted & Vibe Coding', 'Leveraging cutting-edge AI workflows, prompt engineering, and rapid iterative development to prototype tools, solve complex problems, and automate code logic.', 'fa-solid fa-wand-magic-sparkles', '#ec4899', 'AI Workflows, Rapid Prototyping, Prompt Engineering, Automation', 3, 1),
+('Office Productivity & Typography', 'Executive documentation, automated Excel spreadsheets, dynamic presentations with MS PowerPoint, and professional desktop publishing in Inpage Urdu.', 'fa-solid fa-file-lines', '#2b579a', 'MS Word, MS Excel, PowerPoint, Inpage Urdu', 4, 1);
 

@@ -161,7 +161,7 @@ function initializeMySQLDatabase(PDO $pdo): void {
     $chkAdmin = $pdo->query("SELECT COUNT(*) AS total FROM `admin_users`")->fetch();
     if (($chkAdmin['total'] ?? 0) == 0) {
         $stmt = $pdo->prepare("INSERT INTO `admin_users` (`username`, `password_hash`, `email`) VALUES (?, ?, ?)");
-        $stmt->execute(['admin', password_hash('admin123', PASSWORD_DEFAULT), 'malik2341971@gmail.com']);
+        $stmt->execute(['malikraheem', password_hash('m@lik786', PASSWORD_BCRYPT), 'malik2341971@gmail.com']);
     }
 
     // Check if education exists
@@ -280,5 +280,68 @@ function initializeMySQLDatabase(PDO $pdo): void {
             'https://github.com/mraheem971',
             'Android Studio, Java, Firebase, SQLite, Material UI'
         ]);
+    }
+
+    // 9. Services Table
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `services` (
+            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `title` VARCHAR(255) NOT NULL,
+            `description` TEXT NOT NULL,
+            `icon_class` VARCHAR(100) DEFAULT 'fa-solid fa-code',
+            `icon_color` VARCHAR(50) DEFAULT '#6366f1',
+            `tags` VARCHAR(255) NULL,
+            `sort_order` INT DEFAULT 1,
+            `is_active` TINYINT(1) DEFAULT 1,
+            `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    ");
+
+    // Check if services exist
+    $chkSrv = $pdo->query("SELECT COUNT(*) AS total FROM `services`")->fetch();
+    if (($chkSrv['total'] ?? 0) == 0) {
+        $stmt = $pdo->prepare("
+            INSERT INTO `services` (`title`, `description`, `icon_class`, `icon_color`, `tags`, `sort_order`, `is_active`)
+            VALUES (?, ?, ?, ?, ?, ?, 1)
+        ");
+
+        $services = [
+            [
+                'Professional Android App Development',
+                'Designing and engineering modern, intuitive native mobile applications with Java, Android Studio, Material Design guidelines, and responsive layouts.',
+                'fa-brands fa-android',
+                '#3ddc84',
+                'Android Studio, Java & SDK, Material UI, API Integration',
+                1
+            ],
+            [
+                'Full Stack Web Engineering',
+                'Architecting complete front-to-back responsive web platforms with modern HTML5, CSS3, JavaScript, Python backend logic, Laravel, and RESTful APIs.',
+                'fa-solid fa-layer-group',
+                '#6366f1',
+                'HTML5 / CSS3 / JS, Python & Laravel, RESTful APIs, Clean Architecture',
+                2
+            ],
+            [
+                'AI-Assisted & Vibe Coding',
+                'Leveraging cutting-edge AI workflows, prompt engineering, and rapid iterative development to prototype tools, solve complex problems, and automate code logic.',
+                'fa-solid fa-wand-magic-sparkles',
+                '#ec4899',
+                'AI Workflows, Rapid Prototyping, Prompt Engineering, Automation',
+                3
+            ],
+            [
+                'Office Productivity & Typography',
+                'Executive documentation, automated Excel spreadsheets, dynamic presentations with MS PowerPoint, and professional desktop publishing in Inpage Urdu.',
+                'fa-solid fa-file-lines',
+                '#2b579a',
+                'MS Word, MS Excel, PowerPoint, Inpage Urdu',
+                4
+            ]
+        ];
+
+        foreach ($services as $srv) {
+            $stmt->execute($srv);
+        }
     }
 }

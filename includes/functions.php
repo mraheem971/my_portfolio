@@ -99,3 +99,22 @@ function getProjectById(int $id): ?array {
     $project = $stmt->fetch();
     return $project ?: null;
 }
+
+function getServicesList(bool $onlyActive = true): array {
+    $pdo = getDBConnection();
+    $sql = "SELECT * FROM `services`";
+    if ($onlyActive) {
+        $sql .= " WHERE `is_active` = 1";
+    }
+    $sql .= " ORDER BY `sort_order` ASC, `id` ASC";
+    return $pdo->query($sql)->fetchAll();
+}
+
+function getServiceById(int $id): ?array {
+    $pdo = getDBConnection();
+    $stmt = $pdo->prepare("SELECT * FROM `services` WHERE `id` = ?");
+    $stmt->execute([$id]);
+    $service = $stmt->fetch();
+    return $service ?: null;
+}
+

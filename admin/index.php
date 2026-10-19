@@ -5,6 +5,7 @@ require_once __DIR__ . '/header.php';
 $pdo = getDBConnection();
 
 $totalSkills = (int)$pdo->query("SELECT COUNT(*) FROM `skills`")->fetchColumn();
+$totalServices = (int)$pdo->query("SELECT COUNT(*) FROM `services`")->fetchColumn();
 $totalProjects = (int)$pdo->query("SELECT COUNT(*) FROM `projects`")->fetchColumn();
 $totalEducation = (int)$pdo->query("SELECT COUNT(*) FROM `education`")->fetchColumn();
 $totalLanguages = (int)$pdo->query("SELECT COUNT(*) FROM `languages`")->fetchColumn();
@@ -21,6 +22,16 @@ $recentMessages = getMessages(5);
         <div class="stat-info">
             <h4>Total Projects</h4>
             <div class="stat-number"><?= $totalProjects ?></div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background-color: rgba(99, 102, 241, 0.15); color: #818cf8;">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+        </div>
+        <div class="stat-info">
+            <h4>Total Services</h4>
+            <div class="stat-number"><?= $totalServices ?></div>
         </div>
     </div>
 
@@ -73,6 +84,9 @@ $recentMessages = getMessages(5);
     <div style="display: flex; flex-wrap: wrap; gap: 14px;">
         <a href="projects.php" class="btn btn-outline">
             <i class="fa-solid fa-laptop-code"></i> Manage Projects
+        </a>
+        <a href="services.php" class="btn btn-outline">
+            <i class="fa-solid fa-screwdriver-wrench"></i> Manage Services
         </a>
         <a href="profile.php" class="btn btn-outline">
             <i class="fa-solid fa-user-pen"></i> Edit Profile & Details

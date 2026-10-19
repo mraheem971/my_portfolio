@@ -3,6 +3,7 @@ require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/functions.php';
 
 $settings = getSettings();
+$servicesList = getServicesList();
 $projectsList = getProjectsList();
 $educationList = getEducationList();
 $skillCategories = getSkillCategoriesWithSkills();
@@ -208,65 +209,33 @@ $languagesList = getLanguagesList();
                 </div>
 
                 <div class="services-grid">
-                    <!-- Service 1: Professional Android App Development -->
-                    <div class="service-card reveal reveal-up delay-1">
-                        <div class="service-icon-box" style="background-color: rgba(61, 220, 132, 0.15); color: #3ddc84;">
-                            <i class="fa-brands fa-android"></i>
-                        </div>
-                        <h3>Professional Android App Development</h3>
-                        <p>Designing and engineering modern, intuitive native mobile applications with Java, Android Studio, Material Design guidelines, and responsive layouts.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">Android Studio</span>
-                            <span class="service-tag">Java & SDK</span>
-                            <span class="service-tag">Material UI</span>
-                            <span class="service-tag">API Integration</span>
-                        </div>
-                    </div>
-
-                    <!-- Service 2: Full Stack Web Engineering -->
-                    <div class="service-card reveal reveal-up delay-2">
-                        <div class="service-icon-box" style="background-color: rgba(99, 102, 241, 0.15); color: #6366f1;">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <h3>Full Stack Web Engineering</h3>
-                        <p>Architecting complete front-to-back responsive web platforms with modern HTML5, CSS3, JavaScript, Python backend logic, Laravel, and RESTful APIs.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">HTML5 / CSS3 / JS</span>
-                            <span class="service-tag">Python & Laravel</span>
-                            <span class="service-tag">RESTful APIs</span>
-                            <span class="service-tag">Clean Architecture</span>
-                        </div>
-                    </div>
-
-                    <!-- Service 3: AI-Assisted & Vibe Coding -->
-                    <div class="service-card reveal reveal-up delay-3">
-                        <div class="service-icon-box" style="background-color: rgba(236, 72, 153, 0.15); color: #ec4899;">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
-                        <h3>AI-Assisted & Vibe Coding</h3>
-                        <p>Leveraging cutting-edge AI workflows, prompt engineering, and rapid iterative development to prototype tools, solve complex problems, and automate code logic.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">AI Workflows</span>
-                            <span class="service-tag">Rapid Prototyping</span>
-                            <span class="service-tag">Prompt Engineering</span>
-                            <span class="service-tag">Automation</span>
-                        </div>
-                    </div>
-
-                    <!-- Service 4: Office Productivity & Typography -->
-                    <div class="service-card reveal reveal-up delay-4">
-                        <div class="service-icon-box" style="background-color: rgba(43, 87, 154, 0.15); color: #2b579a;">
-                            <i class="fa-solid fa-file-lines"></i>
-                        </div>
-                        <h3>Office Productivity & Typography</h3>
-                        <p>Executive documentation, automated Excel spreadsheets, dynamic presentations with MS PowerPoint, and professional desktop publishing in Inpage Urdu.</p>
-                        <div class="service-tags">
-                            <span class="service-tag">MS Word</span>
-                            <span class="service-tag">MS Excel</span>
-                            <span class="service-tag">PowerPoint</span>
-                            <span class="service-tag">Inpage Urdu</span>
-                        </div>
-                    </div>
+                    <?php if (!empty($servicesList)): ?>
+                        <?php 
+                        $sIdx = 0;
+                        foreach ($servicesList as $srv): 
+                            $sIdx++;
+                            $tags = array_map('trim', explode(',', $srv['tags'] ?? ''));
+                            $iconColor = !empty($srv['icon_color']) ? $srv['icon_color'] : '#6366f1';
+                            $iconClass = !empty($srv['icon_class']) ? $srv['icon_class'] : 'fa-solid fa-code';
+                        ?>
+                            <div class="service-card reveal reveal-up delay-<?= ($sIdx % 4) ?: 4 ?>">
+                                <div class="service-icon-box" style="background-color: <?= htmlspecialchars($iconColor) ?>26; color: <?= htmlspecialchars($iconColor) ?>;">
+                                    <i class="<?= htmlspecialchars($iconClass) ?>"></i>
+                                </div>
+                                <h3><?= htmlspecialchars($srv['title']) ?></h3>
+                                <p><?= htmlspecialchars($srv['description']) ?></p>
+                                <?php if (!empty($tags)): ?>
+                                    <div class="service-tags">
+                                        <?php foreach ($tags as $tag): ?>
+                                            <?php if (!empty($tag)): ?>
+                                                <span class="service-tag"><?= htmlspecialchars($tag) ?></span>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>

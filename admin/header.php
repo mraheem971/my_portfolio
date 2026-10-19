@@ -44,6 +44,11 @@ $unreadCount = getUnreadMessageCount();
                 <span>Profile & Bio</span>
             </a>
 
+            <a href="services.php" class="nav-item <?= $currentPage === 'services.php' ? 'active' : '' ?>">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Services</span>
+            </a>
+
             <a href="education.php" class="nav-item <?= $currentPage === 'education.php' ? 'active' : '' ?>">
                 <i class="fa-solid fa-graduation-cap"></i>
                 <span>Education</span>
