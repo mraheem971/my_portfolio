@@ -48,20 +48,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // Mobile Navigation Menu Drawer
+    // Mobile Navigation Menu Drawer & Backdrop
     // ==========================================
-    menuToggleBtn.addEventListener('click', () => {
-        mobileNav.classList.add('open');
-    });
+    const mobileNavBackdrop = document.getElementById('mobile-nav-backdrop');
 
-    menuCloseBtn.addEventListener('click', () => {
-        mobileNav.classList.remove('open');
-    });
+    function openMobileDrawer() {
+        if (mobileNav) mobileNav.classList.add('open');
+        if (mobileNavBackdrop) mobileNavBackdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileDrawer() {
+        if (mobileNav) mobileNav.classList.remove('open');
+        if (mobileNavBackdrop) mobileNavBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', openMobileDrawer);
+    }
+
+    if (menuCloseBtn) {
+        menuCloseBtn.addEventListener('click', closeMobileDrawer);
+    }
+
+    if (mobileNavBackdrop) {
+        mobileNavBackdrop.addEventListener('click', closeMobileDrawer);
+    }
 
     mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNav.classList.remove('open');
-        });
+        link.addEventListener('click', closeMobileDrawer);
     });
 
     // ==========================================

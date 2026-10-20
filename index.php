@@ -78,6 +78,9 @@ $languagesList = getLanguagesList();
         <a href="#contact" class="mobile-link">Contact</a>
     </div>
 
+    <!-- Mobile Nav Backdrop Overlay -->
+    <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
+
     <!-- Main Content Area -->
     <main>
         <!-- Hero Section -->
