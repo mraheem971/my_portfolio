@@ -350,15 +350,24 @@ img {
 }
 
 .logo-mark {
-    width: 36px;
-    height: 36px;
-    background: var(--primary-gradient);
+    width: 38px;
+    height: 38px;
+    background: transparent;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.95rem;
+    overflow: hidden;
+}
+
+.navbar-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
 }
 
 .logo span {

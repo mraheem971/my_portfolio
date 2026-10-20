@@ -14,6 +14,10 @@ $unreadCount = getUnreadMessageCount();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitle ?? 'Dashboard' ?> | Portfolio Admin</title>
+    <!-- Favicon / Search Bar Icon -->
+    <link rel="icon" type="image/png" href="../assets/favicon.png?v=<?= time() ?>">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="../assets/favicon.png?v=<?= time() ?>">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +32,7 @@ $unreadCount = getUnreadMessageCount();
     <aside class="admin-sidebar" id="adminSidebar">
         <div class="sidebar-header">
             <a href="index.php" class="sidebar-logo">
-                <i class="fa-solid fa-terminal"></i>
+                <img src="../assets/favicon.png?v=<?= time() ?>" alt="Logo" style="width: 32px; height: 32px; border-radius: 8px; object-fit: contain;">
                 <div>Malik<span>Admin</span></div>
             </a>
         </div>

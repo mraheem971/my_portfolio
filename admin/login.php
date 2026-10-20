@@ -94,6 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Admin Login | Malik Raheem Portfolio</title>
+    <!-- Favicon / Search Bar Icon -->
+    <link rel="icon" type="image/png" href="../assets/favicon.png?v=<?= time() ?>">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="../assets/favicon.png?v=<?= time() ?>">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -140,8 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="login-body">
     <div class="login-card">
         <div class="login-header">
-            <div class="login-logo">
-                <i class="fa-solid fa-shield-halved"></i>
+            <div class="login-logo" style="padding: 6px; overflow: hidden; background: rgba(99, 102, 241, 0.1);">
+                <img src="../assets/favicon.png?v=<?= time() ?>" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
             </div>
             <h2>Portfolio Admin Portal</h2>
             <div class="security-badge">

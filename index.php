@@ -15,6 +15,10 @@ $languagesList = getLanguagesList();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($settings['hero_name'] ?? 'Malik Raheem Bukhsh') ?> | Full Stack Developer & Professional Android App Developer</title>
+    <!-- Favicon / Search Bar & Browser Tab Icon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png?v=<?= time() ?>">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/favicon.png?v=<?= time() ?>">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +37,7 @@ $languagesList = getLanguagesList();
     <header class="header">
         <div class="container navbar">
             <a href="#home" class="logo">
-                <span class="logo-mark"><i class="fa-solid fa-terminal"></i></span>
+                <span class="logo-mark"><img src="assets/favicon.png" alt="Logo" class="navbar-logo-img"></span>
                 Malik<span>Raheem</span>
             </a>
             
