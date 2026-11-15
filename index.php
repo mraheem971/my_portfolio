@@ -169,37 +169,6 @@ $languagesList = getLanguagesList();
                         <p>
                             <?= $settings['about_bio_2'] ?? 'Through my personal projects, I am continuously improving my technical skills, exploring new technologies, and learning better development practices. I am eager to contribute to development projects, gain professional experience, and grow as a software developer.' ?>
                         </p>
-                        
-                        <div class="personal-details-grid">
-                            <div class="detail-card">
-                                <div class="detail-icon"><i class="fa-solid fa-user-tie"></i></div>
-                                <div class="detail-body">
-                                    <span class="detail-label">Father's Name</span>
-                                    <span class="detail-val"><?= htmlspecialchars($settings['father_name'] ?? 'Hafiz Muhammad Ashiq') ?></span>
-                                </div>
-                            </div>
-                            <div class="detail-card">
-                                <div class="detail-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <div class="detail-body">
-                                    <span class="detail-label">Education</span>
-                                    <span class="detail-val"><?= htmlspecialchars($settings['education_summary'] ?? 'BS Software Engineering (In Progress)') ?></span>
-                                </div>
-                            </div>
-                            <div class="detail-card">
-                                <div class="detail-icon"><i class="fa-solid fa-building-columns"></i></div>
-                                <div class="detail-body">
-                                    <span class="detail-label">Institution</span>
-                                    <span class="detail-val"><?= htmlspecialchars($settings['institution_name'] ?? 'The Islamia University of Bahawalpur (IUB)') ?></span>
-                                </div>
-                            </div>
-                            <div class="detail-card">
-                                <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
-                                <div class="detail-body">
-                                    <span class="detail-label">Hometown</span>
-                                    <span class="detail-val"><?= htmlspecialchars($settings['hometown'] ?? 'Bahawalpur, Pakistan') ?></span>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
