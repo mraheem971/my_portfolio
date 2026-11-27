@@ -41,6 +41,19 @@ function getSkillCategoriesWithSkills(): array {
     return $categories;
 }
 
+function getAllSkillsList(): array {
+    try {
+        $pdo = getDBConnection();
+        $stmt = $pdo->query("SELECT s.*, c.name AS category_name FROM `skills` s LEFT JOIN `skill_categories` c ON s.category_id = c.id ORDER BY s.sort_order ASC, s.id ASC");
+        $skills = $stmt->fetchAll();
+        if (!empty($skills)) {
+            return $skills;
+        }
+    } catch (\Throwable $e) {}
+
+    return [];
+}
+
 function getLanguagesList(): array {
     $pdo = getDBConnection();
     $stmt = $pdo->query("SELECT * FROM `languages` ORDER BY `sort_order` ASC, `id` ASC");

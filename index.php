@@ -7,6 +7,16 @@ $servicesList = getServicesList();
 $projectsList = getProjectsList();
 $educationList = getEducationList();
 $skillCategories = getSkillCategoriesWithSkills();
+$allSkills = getAllSkillsList();
+if (empty($allSkills) && !empty($skillCategories)) {
+    foreach ($skillCategories as $cat) {
+        if (!empty($cat['skills'])) {
+            foreach ($cat['skills'] as $s) {
+                $allSkills[] = $s;
+            }
+        }
+    }
+}
 $languagesList = getLanguagesList();
 ?>
 <!DOCTYPE html>
@@ -369,30 +379,21 @@ $languagesList = getLanguagesList();
                     <div class="line"></div>
                 </div>
 
-                <?php if (!empty($skillCategories)): ?>
-                    <?php foreach ($skillCategories as $cat): ?>
-                        <div class="skills-category-block reveal reveal-up">
-                            <h3 class="skills-category-title"><i class="<?= htmlspecialchars($cat['icon_class'] ?? 'fa-solid fa-code') ?>"></i> <?= htmlspecialchars($cat['name']) ?></h3>
-                            <div class="skills-tech-grid">
-                                <?php if (!empty($cat['skills'])): ?>
-                                    <?php 
-                                    $sIdx = 0;
-                                    foreach ($cat['skills'] as $skill): 
-                                        $sIdx = ($sIdx % 8) + 1;
-                                    ?>
-                                        <div class="skill-card-item reveal reveal-scale delay-<?= $sIdx ?>">
-                                            <div class="skill-card-icon" style="color: <?= htmlspecialchars($skill['icon_color']) ?>;">
-                                                <i class="<?= htmlspecialchars($skill['icon_class']) ?>"></i>
-                                            </div>
-                                            <h3 class="skill-card-title"><?= htmlspecialchars($skill['name']) ?></h3>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p style="color: var(--text-light); grid-column: 1 / -1;">No skills in this category yet.</p>
-                                <?php endif; ?>
+                <?php if (!empty($allSkills)): ?>
+                    <div class="skills-tech-grid combined-skills-grid reveal reveal-up">
+                        <?php 
+                        $sIdx = 0;
+                        foreach ($allSkills as $skill): 
+                            $sIdx = ($sIdx % 8) + 1;
+                        ?>
+                            <div class="skill-card-item reveal reveal-scale delay-<?= $sIdx ?>">
+                                <div class="skill-card-icon" style="color: <?= htmlspecialchars($skill['icon_color'] ?? '#6366f1') ?>;">
+                                    <i class="<?= htmlspecialchars($skill['icon_class'] ?? 'fa-solid fa-code') ?>"></i>
+                                </div>
+                                <h3 class="skill-card-title"><?= htmlspecialchars($skill['name']) ?></h3>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php else: ?>
                     <p class="text-center" style="color: var(--text-light);">No skills added yet.</p>
                 <?php endif; ?>
